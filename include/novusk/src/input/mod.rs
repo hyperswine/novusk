@@ -1,8 +1,5 @@
 use crate::define_syscall;
 
-// -----------------
-// Read/sys_write for x86_64
-//
 // Read system call
 #[cfg(target_arch = "x86_64")]
 pub fn read(sys_arg: u8) -> u8 {

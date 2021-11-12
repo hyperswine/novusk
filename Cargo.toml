@@ -21,9 +21,6 @@ members = [
     # Architectures
     "arch/aarch64/",
     "arch/arm32/",
-    "arch/riscv/",
-    "arch/x86_64/",
-    "arch/xtensa/",
     # Drivers
     "drivers/blue/",
     "drivers/boot/multiboot/",
@@ -72,7 +69,6 @@ members = [
     # Net
     # "net/ethernet/stm_eth/",
     # Sound
-    "sound/x86_64-sound/",
     # Kernel Modules
     "kernel/modules/ex1/",
     "kernel/modules/fscheck/",
@@ -91,15 +87,6 @@ stdio = { path = "lib/libc/stdio/" }
 usbd = { path = "drivers/usbd/" }
 unistd = { path = "lib/libc/unistd/" }
 
-[target.'cfg(target_arch = "x86_64")'.dependencies]
-bootloader = "0.9.18"
-libwin = { path = "lib/libwin/" }
-libost = { path = "lib/libost/" }
-pc_keyboard = { path = "drivers/input/keyboard/pc_keyboard/" }
-vgag = { path = "drivers/gpu/vgag/" }
-x86_64 = { path = "arch/x86_64/" }
-x86_64-sound = { path = "sound/x86_64-sound" }
-
 [target.'cfg(target_arch = "aarch64")'.dependencies]
 aarch64 = { path = "arch/aarch64/" }
 libbmu = { path = "lib/libbmu/" }
@@ -109,31 +96,18 @@ rpi = { path = "drivers/rpi/" }
 arm32 = { path = "arch/arm32/" }
 libbmu = { path = "lib/libbmu/" }
 
-[target.'cfg(target_arch = "riscv32")'.dependencies]
-libbmu = { path = "lib/libbmu/" }
-riscv = { path = "arch/riscv" }
-
-[target.'cfg(target_arch = "xtensa")'.dependencies]
-xtensa = { path = "arch/xtensa/" }
-xtensa-lx-rt = { version = "0.7.0", features = ["lx6"] }
-
 [features]
-bios_boot = ["x86_64/bios_boot"]
+bios_boot = ["arm32/bios_boot"]
 custom_config = []
 esp32 = ["xtensa/esp32"]
-grub = ["multiboot", "x86_64/grub"]
-hifive = ["riscv/hifive"]
-lofive = ["riscv/lofive"]
+grub = ["multiboot", "arm32/grub"]
 multiboot = []
 rpi3 = ["aarch64/rpi3"]
 stellaris_6965 = ["arm32/stellaris_6965"]
 stm32f407 = ["arm32/stm32f407"]
-# stm32f4 = ["arm/stm32f4"]
-# stm32f401 = ["arm/stm32f401"]
-# stm32f407 = ["arm/stm32f407"]
-uefi_boot = ["x86_64/uefi_boot"]
-vga_0xa = ["x86_64/vga_0xa", "bootloader/vga_320x200"]
-virt = ["aarch64/qemu_virt", "riscv/virt", "x86_64/virt"]
+uefi_boot = ["arm32/uefi_boot"]
+vga_0xa = ["arm32/vga_0xa", "bootloader/vga_320x200"]
+virt = ["aarch64/qemu_virt", "arm32/virt"]
 
 # For developers:
 qemu = []
