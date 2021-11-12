@@ -1,5 +1,0 @@
-#[entry]
-fn main() -> ! {
-
-    loop {  }
-}

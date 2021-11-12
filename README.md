@@ -9,3 +9,6 @@ Novusk - A kernel written in Rust inspired by Linux
 
 # Documentation Structure
 Each rust dir has its own associated README.md detailing what the source code is about.
+
+# ARM-ONLY BRANCH
+Targets RPI64.

@@ -4,7 +4,6 @@ use ps2_mouse::{Mouse, MouseState};
 use spin::Lazy;
 use spinning_top::Spinlock;
 use kinfo::status::set_status;
-use x86_64::instructions::port::Port;
 
 static PS2MOUSE: Lazy<Spinlock<Mouse>> = Lazy::new(|| Spinlock::new(Mouse::new()));
 

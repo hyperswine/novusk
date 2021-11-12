@@ -15,7 +15,6 @@ pub trait Device {
 
     }
 
-    #[cfg(not(target_arch = "x86_64"))]
     fn write_bytes(&self, bytes: &[u8]) {
 
     }

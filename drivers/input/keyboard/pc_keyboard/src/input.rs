@@ -6,8 +6,6 @@ use futures_util::stream::{Stream, StreamExt};
 use crate::PcKeyboard;
 use pc_keyboard::{DecodedKey, HandleControl, Keyboard, KeyEvent, ScancodeSet1, layouts::*, KeyCode};
 use printk::put::puts;
-use x86_64::instructions::port::Port;
-
 
 impl PcKeyboard {
     pub fn init(&mut self) {
