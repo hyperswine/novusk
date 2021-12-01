@@ -1,16 +1,15 @@
-use crate::arm32_printk;
-use crate::kernel::io::ARM32IO;
+use crate::kernel::cpu::{CPUINFO};
 use cortex_m::Peripherals;
-use cortex_m::peripheral::CPUID;
-pub use cortex_m_rt::heap_start;
 
-pub mod model;
+pub mod mm;
 
-pub unsafe fn cortex_m_init() -> (&'static str, u32) {
-    let mut cpu_peripherals = Peripherals::take().unwrap();
+pub fn cortex_m_init() {
+    set_info();
+}
 
-    let cpuid = cpu_peripherals.CPUID;
-    let cpu_model = model::get_model(cpuid.base.read());
+fn set_info() {
+    let peripherals = Peripherals::take().unwrap();
+    let cpuid = peripherals.CPUID;
 
-    return (cpu_model, cpuid.base.read());
+    unsafe { CPUINFO .set("arm32", "Cortex M", Some(cpuid.base.read())); }
 }

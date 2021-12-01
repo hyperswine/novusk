@@ -1,17 +1,21 @@
 use crate::arm32_printk;
-use crate::mm::arm_mm_init;
-use init::kmain;
-use setup::after_kernel_setup;
-use cortex_m::peripheral::Peripherals;
+use crate::mm::memory_init;
+use super::device::{device_init, DEVICE_NAME};
 
 pub unsafe fn setup_arm32_kernel() {
-    arm_mm_init();
-    kinfo!("Memory initialized");
-    arm32_printk!("    Allocator initialized");
+    setup_device();
+    arm32_printk!("Device initialized\n");
 
-    kmain::kernel_init();
-    kinfo!("Novusk initialized\n");
-
-    arm32_printk!("Starting after kernel...");
-    after_kernel_setup();
+    memory_init();
+    arm32_printk!("Memory initialized\n");
 }
+
+unsafe fn setup_device() {
+    let (success, name) = device_init();
+
+    match success {
+        Err(e) => panic!("Error while initializing device: {:?}", e),
+        _ => DEVICE_NAME = name,
+    };
+}
+

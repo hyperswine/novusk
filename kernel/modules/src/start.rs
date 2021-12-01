@@ -3,8 +3,12 @@ use crate::modules::KernelModules;
 pub(crate) unsafe fn run(module: KernelModules) {
     match module {
         KernelModules::None => return,
-        KernelModules::Ex1 => ex1::ex1_init(),
-        KernelModules::FsCheck => fscheck::fscheck_init(),
+        KernelModules::Ex1 => {
+            start_module!(ex1_init, ex1_end);
+        },
+        KernelModules::FsCheck => {
+            start_module!(fscheck_init, fscheck_end);
+        },
         _ => return,
     }
 
@@ -17,8 +21,8 @@ pub fn arch_modules_init(modules: &[KernelModules; 10]) {
     }
 }
 
-pub unsafe fn kernel_modules_init(modules: &[KernelModules; 10]) {
+pub fn kernel_modules_init(modules: &[KernelModules; 10]) {
     for i in 0..10 {
-        unsafe { run(modules[i]) }
+        unsafe { run(modules[i]); }
     }
 }

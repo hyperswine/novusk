@@ -1,38 +1,37 @@
 #![no_std]
-#![feature(asm, llvm_asm)]
 
-#[macro_use] extern crate kinfo;
-#[macro_use] extern crate printk;
 #[macro_use] extern crate tock_registers;
 
-pub mod bases;
-pub use bases::*;
 pub mod board;
-pub use board::check_board;
-pub mod debug;
-pub mod fb;
-pub use fb::RpiFb;
-pub mod gpio;
-pub use gpio::*;
-pub mod led;
-pub use led::RpiLed;
+pub use board::RaspberryPi;
+pub mod common;
+pub use common::*;
 
+pub mod rpi2;
+pub mod rpi3;
 
-// This will probably be added to the Aarch64 kernel
-pub mod mb;
+pub use rpi2::Rpi2;
+pub use rpi3::Rpi3;
 
-pub fn aarch64_rpi_init(board: i8) {
-    if board == 3 {
-        let mut led = led::RpiLed::new();
-        led.init();
-        kinfo!("ACT LED initialized");
-    }
+#[cfg(feature = "rpi3")]
+pub use rpi3::*;
+
+#[cfg(target_arch = "aarch64")]
+#[no_mangle]
+#[export_name = "device_init"]
+pub extern "C" fn rpi3_board_init() -> (Result<(), &'static str>, &'static str) {
+    let mut pi = Rpi3::new();
+    pi.init();
+
+    return (Ok(()), "RPi 3");
 }
 
-pub fn arm_rpi_init(board: i8) {
-    if board == 1 {
+#[cfg(target_arch = "arm")]
+#[no_mangle]
+#[export_name = "device_init"]
+pub extern "C" fn rpi2_board_init() -> (Result<(), &'static str>, &'static str) {
+    let mut pi = Rpi2::new();
+    pi.init();
 
-    } else if board == 2 {
-
-    } else {  }
+    return (Ok(()), "RPi 2");
 }

@@ -14,7 +14,7 @@ name = "novusk"
 path = "src/lib.rs"
 edition = "2018"
 #
-# crate-type = ["staticlib"]
+crate-type = ["staticlib"]
 
 [workspace]
 members = [
@@ -31,11 +31,14 @@ members = [
     "drivers/device/",
     "drivers/firmware/arm/stellarisd/",
     "drivers/firmware/arm/stmd/",
+    "drivers/firmware/esp/",
+    "drivers/firmware/mailbox/",
     "drivers/firmware/sifive/",
     "drivers/gpu/vgag/",
     "drivers/input/keyboard/",
     "drivers/input/keyboard/pc_keyboard/",
     "drivers/input/mouse/",
+    "drivers/input/mouse/kb_mouse/",
     "drivers/input/mouse/ps2_mouse/",
     "drivers/net/ethernet/",
     "drivers/nkuefi/",
@@ -93,6 +96,7 @@ unistd = { path = "lib/libc/unistd/" }
 
 [target.'cfg(target_arch = "x86_64")'.dependencies]
 bootloader = "0.9.18"
+kb_mouse = { path = "drivers/input/mouse/kb_mouse/" }
 libwin = { path = "lib/libwin/" }
 libost = { path = "lib/libost/" }
 pc_keyboard = { path = "drivers/input/keyboard/pc_keyboard/" }
@@ -126,6 +130,7 @@ hifive = ["riscv/hifive"]
 lofive = ["riscv/lofive"]
 multiboot = []
 rpi3 = ["aarch64/rpi3"]
+rpi2 = ["arm32/rpi2"]
 stellaris_6965 = ["arm32/stellaris_6965"]
 stm32f407 = ["arm32/stm32f407"]
 # stm32f4 = ["arm/stm32f4"]

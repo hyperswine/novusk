@@ -1,32 +1,20 @@
 use crate::aarch64_printk;
 use init::kmain::kernel_init;
+use super::device;
 use libbmu::bmu_init;
-use modules::modules::KernelModules;
-use rpi::mb::MailBox;
-use rpi::board::check_board;
-use rpi::debug::break_point;
-use core::panic::Location;
 
 pub unsafe fn aarch64_init() {
-    let mut mailbox = MailBox::new();
-    mailbox.clear();
-    kinfo!("Mail box cleared\n");
-
-    aarch64_printk!("RPi board: {}\n", check_board());
-
-    aarch64_printk!("Starting Aarch64 kernel modules...\n");
-    modules::start::arch_modules_init(&[
-        KernelModules::Ex1,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None,
-        KernelModules::None
-    ]);
+    setup_device();
 
     bmu_init();
+}
+
+fn setup_device() {
+    let (success, device) = device::initialize_device();
+
+    if success.is_err() {
+        panic!("Error while initializing device: {:?}", success.err());
+    }
+
+    aarch64_printk!("Initialized {}", device);
 }

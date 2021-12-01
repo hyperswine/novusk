@@ -1,5 +1,5 @@
 pub mod allocator;
 
-pub(crate) unsafe fn arm_mm_init() {
+pub unsafe fn memory_init() {
     allocator::allocator_init();
 }
